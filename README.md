@@ -1,5 +1,5 @@
 # AppInstaller
-Simple tool that makes your apps easy to install.  
+Simple tool that makes your project easy to install.  
 
 # How to use
 [Here](https://github.com/LDev-IX/AppInstaller/tree/main/example) is a quick example of a simple AppInstaller project.  
