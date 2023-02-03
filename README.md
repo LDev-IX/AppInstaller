@@ -11,4 +11,4 @@ Simple tool that makes your project easy to install.
 
 # FAQ
 Q: Where does AppInstaller copy files ?  
-A: AppInstaller copies files to C:\ProgramData\{App_Name}\  
+A: AppInstaller copies files to C:\ProgramData\\{App_Name}\  
