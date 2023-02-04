@@ -8,7 +8,7 @@ static class Program{
     static string working_directory = Environment.CurrentDirectory;
 
     static void Main(){
-        if(!File.Exists(working_directory + @"\.lixi")){
+        if(!File.Exists($"{working_directory}\\.lixi")){
             Console.WriteLine("Error: .lixi file not found!");
             Console.WriteLine("Press any key to exit");
             Console.ReadKey();
@@ -16,32 +16,27 @@ static class Program{
         }
 
         int current_index = 0;
-        for(current_index = 0; current_index < 256; current_index++){
-            Command unset_cmd = new Command();
-            unset_cmd.name = "unset";
-            unset_cmd.arguments[0] = "";
-            unset_cmd.arguments[1] = "";
-            constructed_app.commands[current_index] = unset_cmd;
-        }
-
-        current_index = 0;
-        foreach(string f_line in File.ReadAllLines(working_directory + @"\.lixi")){
+        foreach(string f_line in File.ReadAllLines($"{working_directory}\\.lixi")){
             string f_temp = f_line.Replace(" ", "").Replace("(", ":").Replace(");", "");
             Command constructed_cmd = new Command();
             constructed_cmd.name = f_temp.Split(':', 2)[0];
             constructed_cmd.arguments = f_temp.Split(':', 2)[1].Split(',', 2);
-            constructed_app.commands[current_index] = constructed_cmd;
-            current_index++;
-        }
+            switch(ParseCommand(constructed_cmd, false)){
+                case CommandType.Attribute:
+                    constructed_cmd.type = ParseCommand(constructed_cmd, true);
+                    break;
 
-        current_index = 0;
-        foreach(Command f_command in constructed_app.commands){
-            if(f_command.name == "unset"){
-                break;
+                case CommandType.Method:
+                    constructed_cmd.type = CommandType.Method;
+                    break;
+
+                case CommandType.Unknown:
+                    Console.WriteLine("Error: Incorrect .lixi file syntax!");
+                    Console.WriteLine("Press any key to exit");
+                    Console.ReadKey();
+                    return;
             }
-            if(LoadAppProperties(f_command)){
-                constructed_app.commands[current_index].name = "propcmd";
-            }
+            constructed_app.commands[current_index] = constructed_cmd;
             current_index++;
         }
 
@@ -59,19 +54,11 @@ static class Program{
 
         Console.Clear();
         Console.WriteLine("Installing " + constructed_app.name);
-        Directory.CreateDirectory(@"C:\ProgramData\" + constructed_app.name);
+        Directory.CreateDirectory($"C:\\ProgramData\\{constructed_app.name}");
 
         foreach(Command f_command in constructed_app.commands){
-            if(f_command.name == "unset"){
-                break;
-            }
-            if(f_command.name != "propcmd"){
-                if(!ExecuteCommand(f_command)){
-                    Console.WriteLine("Error: Incorrect .lixi file syntax!");
-                    Console.WriteLine("Press any key to exit");
-                    Console.ReadKey();
-                    return;
-                }
+            if(f_command.type == CommandType.Method){
+                ParseCommand(f_command, true);
             }
         }
 
@@ -80,51 +67,56 @@ static class Program{
         Console.ReadKey();
     }
 
-    static bool LoadAppProperties(Command command){
+    static CommandType ParseCommand(Command command, bool execute){
         switch(command.name){
             default:
-                return false;
-
+                return CommandType.Unknown;
+            
             case "set_name":
-                constructed_app.name = command.arguments[0];
-                break;
+                if(execute){
+                    constructed_app.name = command.arguments[0];
+                }
+                return CommandType.Attribute;
 
             case "set_description":
-                constructed_app.description = command.arguments[0];
-                break;
+                if(execute){
+                    constructed_app.description = command.arguments[0];
+                }
+                return CommandType.Attribute;
 
             case "set_author":
-                constructed_app.author = command.arguments[0];
-                break;
+                if(execute){
+                    constructed_app.author = command.arguments[0];
+                }
+                return CommandType.Attribute;
 
             case "set_website":
-                constructed_app.website = command.arguments[0];
-                break;
-        }
-        return true;
-    }
-
-    static bool ExecuteCommand(Command command){
-        switch(command.name){
-            default:
-                return false;
+                if(execute){
+                    constructed_app.website = command.arguments[0];
+                }
+                return CommandType.Attribute;
             
             case "shortcut":
-                Console.WriteLine("Creating a desktop shortcut");
-                File.CreateSymbolicLink(@"C:\Users\" + Environment.UserName + @"\Desktop\" + constructed_app.name, @"C:\ProgramData\" + constructed_app.name + @"\" + command.arguments[0]);
-                break;
+                if(execute){
+                    Console.WriteLine("Creating a desktop shortcut");
+                    File.CreateSymbolicLink($"C:\\Users\\{Environment.UserName}\\Desktop\\{constructed_app.name}", $"C:\\ProgramData\\{constructed_app.name}\\{command.arguments[0]}");
+                }
+                return CommandType.Method;
 
             case "move":
-                Console.WriteLine("Moving files");
-                File.Copy(working_directory + @"\assets\" + command.arguments[0], @"C:\ProgramData\" + constructed_app.name + @"\" + command.arguments[1], true);
-                break;
+                if(execute){
+                    Console.WriteLine("Moving files");
+                    File.Copy($"{working_directory}\\assets\\{command.arguments[0]}", $"C:\\ProgramData\\{constructed_app.name}\\{command.arguments[1]}", true);
+                }
+                return CommandType.Method;
 
             case "mkdir":
-                Console.WriteLine("Creating directories");
-                Directory.CreateDirectory(@"C:\ProgramData\" + constructed_app.name + @"\" + command.arguments[0]);
-                break;
+                if(execute){
+                    Console.WriteLine("Creating directories");
+                    Directory.CreateDirectory($"C:\\ProgramData\\{constructed_app.name}\\{command.arguments[0]}");
+                }
+                return CommandType.Method;
         }
-        return true;
     }
 }
 
@@ -138,5 +130,12 @@ public class App{
 
 public class Command{
     public string name = "Null";
-    public string[] arguments = new string[2];
+    public string[] arguments = {"", ""};
+    public CommandType type = CommandType.Unknown;
+}
+
+public enum CommandType{
+    Attribute,
+    Method,
+    Unknown
 }
