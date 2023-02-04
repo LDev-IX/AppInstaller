@@ -4,6 +4,9 @@ using System.IO;
 namespace AppInstaller;
 
 static class Program{
+    static string var_working_dir = Environment.CurrentDirectory;
+    static string var_app_name = "Null";
+
     static void Main(){
         string var_current_dir = Environment.CurrentDirectory;
         string var_app_name = "Unknown";
@@ -45,5 +48,16 @@ static class Program{
         Console.WriteLine("Done!");
         Console.WriteLine("Press any key to exit");
         Console.ReadKey();
+    }
+
+    static void Rework(){
+        if(!File.Exists(var_working_dir + @"\.lixi")){
+            Console.WriteLine(".lixi file not found!");
+            return;
+        }
+
+        foreach(string f_line in File.ReadAllLines(var_working_dir + @"\.lixi")){
+            
+        }
     }
 }
