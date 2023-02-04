@@ -17,10 +17,10 @@ static class Program{
 
         int current_index = 0;
         foreach(string f_line in File.ReadAllLines($"{working_directory}\\.lixi")){
-            string f_temp = f_line.Replace(" ", "").Replace("(", ":").Replace(");", "");
+            string f_temp = f_line.Replace(", ", ",").Replace(");", "");
             Command constructed_cmd = new Command();
-            constructed_cmd.name = f_temp.Split(':', 2)[0];
-            constructed_cmd.arguments = f_temp.Split(':', 2)[1].Split(',', 2);
+            constructed_cmd.name = f_temp.Split('(', 2)[0];
+            constructed_cmd.arguments = f_temp.Split('(', 2)[1].Split(',', 2);
             switch(ParseCommand(constructed_cmd, false)){
                 case CommandType.Attribute:
                     constructed_cmd.type = ParseCommand(constructed_cmd, true);
@@ -121,17 +121,34 @@ static class Program{
 }
 
 public class App{
-    public string name = "Null";
-    public string description = "Null";
-    public string author = "Null";
-    public string website = "Null";
-    public Command[] commands = new Command[256];
+    public string name {get; set;}
+    public string description {get; set;}
+    public string author {get; set;}
+    public string website {get; set;}
+    public Command[] commands {get; set;}
+
+    public App(){
+        name = "";
+        description = "";
+        author = "";
+        website = "";
+        commands = new Command[256];
+        for(int i = 0; i < 256; i++){
+            commands[i] = new Command();
+        }
+    }
 }
 
 public class Command{
-    public string name = "Null";
-    public string[] arguments = {"", ""};
-    public CommandType type = CommandType.Unknown;
+    public string name {get; set;}
+    public string[] arguments {get; set;}
+    public CommandType type {get; set;}
+
+    public Command(){
+        name = "";
+        arguments = new string[2]{"", ""};
+        type = CommandType.Unknown;
+    }
 }
 
 public enum CommandType{
