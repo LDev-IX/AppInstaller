@@ -12,8 +12,8 @@ Simple tool that makes your project easy to install.
 # TODO
 - [x] First stable release
 - [ ] Good documentation
-- [ ] Better examples
-- [ ] Better .lixi file syntax
+- [ ] Better example
+- [x] Better .lixi file syntax
 - [ ] More installer options/commands
 - [ ] Uninstalling programs
 
