@@ -10,6 +10,7 @@ static class Program{
         int var_current_line = 0;
 
         if(!File.Exists(var_current_dir + @"\.lixi")){
+            Console.WriteLine(".lixi file not found!");
             return;
         }
 
