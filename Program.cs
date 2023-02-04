@@ -21,7 +21,7 @@ static class Program{
             unset_cmd.name = "unset";
             unset_cmd.arguments[0] = "";
             unset_cmd.arguments[1] = "";
-            constructed_app.commands[current_index].name = "unset";
+            constructed_app.commands[current_index] = unset_cmd;
         }
 
         current_index = 0;
@@ -59,6 +59,7 @@ static class Program{
 
         Console.Clear();
         Console.WriteLine("Installing " + constructed_app.name);
+        Directory.CreateDirectory(@"C:\ProgramData\" + constructed_app.name);
 
         foreach(Command f_command in constructed_app.commands){
             if(f_command.name == "unset"){
@@ -104,7 +105,6 @@ static class Program{
     }
 
     static bool ExecuteCommand(Command command){
-        Console.WriteLine(command.name);
         switch(command.name){
             default:
                 return false;
