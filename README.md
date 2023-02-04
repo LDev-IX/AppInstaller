@@ -9,6 +9,14 @@ Simple tool that makes your project easy to install.
 > - if the current line starts with "mkdir" then the installer will create a directory
 > - if the current line is not any of the above, then the installer will copy the specified file
 
+# TODO
+- [x] First stable release
+- [ ] Good documentation
+- [ ] Better examples
+- [ ] Better .lixi file syntax
+- [ ] More installer options/commands
+- [ ] Uninstalling programs
+
 # FAQ
 Q: Where does AppInstaller copy files ?  
 A: AppInstaller copies files to C:\ProgramData\\{App_Name}\  
