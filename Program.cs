@@ -17,6 +17,10 @@ static class Program{
 
         int current_index = 0;
         for(current_index = 0; current_index < 256; current_index++){
+            Command unset_cmd = new Command();
+            unset_cmd.name = "unset";
+            unset_cmd.arguments[0] = "";
+            unset_cmd.arguments[1] = "";
             constructed_app.commands[current_index].name = "unset";
         }
 
