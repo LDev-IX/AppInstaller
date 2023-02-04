@@ -1,0 +1,6 @@
+set_app_name(ExampleAppInstallerProject);
+move(some_important_file.txt, copied_file.txt);
+move(File.exe, Program.exe);
+mkdir(created_folder);
+move(subfolder\subfolder_file.txt, created_folder\subfolder_file_copy.txt);
+create_shortcut(Program.exe);
