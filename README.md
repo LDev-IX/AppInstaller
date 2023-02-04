@@ -13,6 +13,7 @@ Simple tool that makes your project easy to install.
 - [ ] Uninstalling programs
 - [x] More info about apps
 - [ ] Optimize code
+- [ ] Exception handling
 
 # FAQ
 Q: Where does AppInstaller copy files ?  
