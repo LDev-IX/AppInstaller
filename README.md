@@ -11,6 +11,7 @@ Simple tool that makes your project easy to install.
 - [x] Better .lixi file syntax
 - [ ] More installer options/commands
 - [ ] Uninstalling programs
+- [ ] More info about apps
 
 # FAQ
 Q: Where does AppInstaller copy files ?  
