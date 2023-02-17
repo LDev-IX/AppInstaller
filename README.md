@@ -1,11 +1,9 @@
 # AppInstaller
 Simple tool that makes your project easy to install.  
+It is being rewritten from scratch.  
 
 # How to use
 [Here](https://github.com/LDev-IX/AppInstaller/tree/main/example) is a quick example of a simple AppInstaller project.  
-
-# Warning !
-I am currently rewriting this tool in Rust!  
 
 # TODO
 - [x] First stable release
